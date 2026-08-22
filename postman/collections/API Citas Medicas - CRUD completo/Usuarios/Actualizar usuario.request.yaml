@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{baseUrl}}/api/usuarios/{{usuarioId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nombre": "Laura Sofia",
+      "apellido": "Martinez",
+      "email": "laura.martinez@clinica.com",
+      "passwordHash": "$2a$10$hashdeprueba",
+      "telefono": "5555998877",
+      "rol": { "id": 3 },
+      "activo": true
+    }
+order: 4000

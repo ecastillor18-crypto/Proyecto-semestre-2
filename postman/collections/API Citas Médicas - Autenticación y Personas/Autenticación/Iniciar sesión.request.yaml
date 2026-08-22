@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "usuario@ejemplo.com",
+      "password": "password123"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('El login responde correctamente', function () {
+          pm.expect(pm.response.code).to.be.oneOf([200, 201]);
+      });
+      const respuesta = pm.response.json();
+      const token = respuesta.token || respuesta.access_token;
+      pm.test('La respuesta contiene un token', function () {
+          pm.expect(token).to.be.a('string').and.not.empty;
+      });
+      if (token) {
+          pm.collectionVariables.set('token', token);
+      }
+    language: text/javascript
+order: 1000

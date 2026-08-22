@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{baseUrl}}/api/citas"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "paciente": { "id": 4 },
+      "medico": { "id": 1 },
+      "horario": { "id": 3 },
+      "estado": "PENDIENTE",
+      "motivo": "Consulta de prueba"
+    }
+order: 3000

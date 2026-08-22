@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{baseUrl}}/api/personas/{{personaId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+  Authorization: Bearer {{token}}
+body:
+  type: text
+  content: |-
+    {
+      "nombre": "Ana María",
+      "apellido": "García",
+      "email": "ana.garcia@ejemplo.com",
+      "telefono": "3009876543"
+    }
+order: 3000

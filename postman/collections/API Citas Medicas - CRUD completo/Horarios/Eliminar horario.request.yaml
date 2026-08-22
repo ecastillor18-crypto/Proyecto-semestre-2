@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/api/horarios/{{horarioId}}"
+method: DELETE
+order: 5000

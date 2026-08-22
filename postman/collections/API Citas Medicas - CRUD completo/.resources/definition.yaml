@@ -1,0 +1,10 @@
+$kind: collection
+description: Requests CRUD para probar la API del proyecto.
+variables:
+  baseUrl: http://localhost:8080
+  rolId: "1"
+  usuarioId: "4"
+  especialidadId: "1"
+  medicoId: "1"
+  horarioId: "3"
+  citaId: "1"

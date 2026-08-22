@@ -1,0 +1,15 @@
+# Use this workspace to collaborate
+workspace:
+  id: 691f8de0-6746-4bdc-810c-bb91505fa38b
+
+localResources:
+  collections:
+    - ../postman_collection.json
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../postman/collections/API Citas Médicas - Autenticación y Personas: ae5f5b0e-7353-4738-a3fe-cca0e0e75e6f
+    ../postman/collections/API Citas Médicas - Autenticación y Personas Copy: 9dbe7607-529e-4170-a4e5-0d4a019ee4fb
+    ../postman/collections/API Citas Medicas - CRUD completo: 1cd932a0-6a51-483a-be63-ffe51ec7855d
