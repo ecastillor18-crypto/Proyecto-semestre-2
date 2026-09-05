@@ -1,0 +1,85 @@
+digraph DER_FASE1 {
+  graph [rankdir=LR, splines=ortho, nodesep=0.55, ranksep=0.85, pad=0.25, bgcolor="white"];
+  node [shape=plain, fontname="Arial"];
+  edge [fontname="Arial", fontsize=10, arrowsize=0.8];
+
+  roles [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#EAEAEA"><B>roles</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PK</B> id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>UK</B> nombre_rol : VARCHAR(30)</TD></TR>
+      <TR><TD ALIGN="LEFT">descripcion : VARCHAR(150)</TD></TR>
+    </TABLE>>];
+
+  usuarios [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#EAEAEA"><B>usuarios</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PK</B> id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT">nombre : VARCHAR(80)</TD></TR>
+      <TR><TD ALIGN="LEFT">apellido : VARCHAR(80)</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>UK</B> email : VARCHAR(120)</TD></TR>
+      <TR><TD ALIGN="LEFT">password_hash : VARCHAR(255)</TD></TR>
+      <TR><TD ALIGN="LEFT">telefono : VARCHAR(20)</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>FK</B> rol_id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT">activo : BOOLEAN</TD></TR>
+      <TR><TD ALIGN="LEFT">fecha_creacion : DATETIME</TD></TR>
+    </TABLE>>];
+
+  especialidades [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#EAEAEA"><B>especialidades</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PK</B> id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>UK</B> nombre : VARCHAR(80)</TD></TR>
+      <TR><TD ALIGN="LEFT">descripcion : VARCHAR(255)</TD></TR>
+    </TABLE>>];
+
+  medicos [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#EAEAEA"><B>medicos</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PK</B> id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>FK/UK</B> usuario_id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>UK</B> numero_colegiado : VARCHAR(30)</TD></TR>
+      <TR><TD ALIGN="LEFT">anios_experiencia : INT</TD></TR>
+      <TR><TD ALIGN="LEFT">biografia : TEXT</TD></TR>
+    </TABLE>>];
+
+  medico_especialidad [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#EAEAEA"><B>medico_especialidad</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PK/FK</B> medico_id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PK/FK</B> especialidad_id : INT</TD></TR>
+    </TABLE>>];
+
+  horarios [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#EAEAEA"><B>horarios_disponibles</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PK</B> id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>FK</B> medico_id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT">fecha : DATE</TD></TR>
+      <TR><TD ALIGN="LEFT">hora_inicio : TIME</TD></TR>
+      <TR><TD ALIGN="LEFT">hora_fin : TIME</TD></TR>
+      <TR><TD ALIGN="LEFT">estado : ENUM</TD></TR>
+    </TABLE>>];
+
+  citas [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#EAEAEA"><B>citas_medicas</B></TD></TR>
+      <TR><TD ALIGN="LEFT"><B>PK</B> id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>FK</B> paciente_id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>FK</B> medico_id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT"><B>FK/UK</B> horario_id : INT</TD></TR>
+      <TR><TD ALIGN="LEFT">estado : ENUM</TD></TR>
+      <TR><TD ALIGN="LEFT">motivo : VARCHAR(255)</TD></TR>
+      <TR><TD ALIGN="LEFT">fecha_creacion : DATETIME</TD></TR>
+      <TR><TD ALIGN="LEFT">fecha_actualizacion : DATETIME</TD></TR>
+    </TABLE>>];
+
+  roles -> usuarios [label="1 : N", arrowhead=none];
+  usuarios -> medicos [label="1 : 0..1", arrowhead=none];
+  medicos -> medico_especialidad [label="1 : N", arrowhead=none];
+  especialidades -> medico_especialidad [label="1 : N", arrowhead=none];
+  medicos -> horarios [label="1 : N", arrowhead=none];
+  usuarios -> citas [label="paciente 1 : N", arrowhead=none];
+  medicos -> citas [label="médico 1 : N", arrowhead=none];
+  horarios -> citas [label="1 : 0..1", arrowhead=none];
+}

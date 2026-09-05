@@ -1,0 +1,4 @@
+# Recurso local oficial de la entrega Fase 1.
+localResources:
+  collections:
+    - ../postman_collection.json

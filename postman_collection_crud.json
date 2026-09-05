@@ -1,0 +1,78 @@
+{
+  "info": {
+    "name": "API Citas Medicas - CRUD completo",
+    "description": "Requests CRUD para probar la API del proyecto.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "rolId", "value": "1" },
+    { "key": "usuarioId", "value": "4" },
+    { "key": "especialidadId", "value": "1" },
+    { "key": "medicoId", "value": "1" },
+    { "key": "horarioId", "value": "3" },
+    { "key": "citaId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Roles",
+      "item": [
+        { "name": "Listar roles", "request": { "method": "GET", "url": "{{baseUrl}}/api/roles" } },
+        { "name": "Buscar rol", "request": { "method": "GET", "url": "{{baseUrl}}/api/roles/{{rolId}}" } },
+        { "name": "Crear rol", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombreRol\": \"ROLE_TEST\",\n  \"descripcion\": \"Rol para pruebas\"\n}" }, "url": "{{baseUrl}}/api/roles" } },
+        { "name": "Actualizar rol", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombreRol\": \"ROLE_TEST_ACTUALIZADO\",\n  \"descripcion\": \"Rol actualizado\"\n}" }, "url": "{{baseUrl}}/api/roles/{{rolId}}" } },
+        { "name": "Eliminar rol", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/roles/{{rolId}}" } }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        { "name": "Listar usuarios", "request": { "method": "GET", "url": "{{baseUrl}}/api/usuarios" } },
+        { "name": "Buscar usuario", "request": { "method": "GET", "url": "{{baseUrl}}/api/usuarios/{{usuarioId}}" } },
+        { "name": "Crear usuario", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Laura\",\n  \"apellido\": \"Martinez\",\n  \"email\": \"laura.martinez@clinica.com\",\n  \"passwordHash\": \"$2a$10$hashdeprueba\",\n  \"telefono\": \"5555667788\",\n  \"rol\": { \"id\": 3 },\n  \"activo\": true\n}" }, "url": "{{baseUrl}}/api/usuarios" } },
+        { "name": "Actualizar usuario", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Laura Sofia\",\n  \"apellido\": \"Martinez\",\n  \"email\": \"laura.martinez@clinica.com\",\n  \"passwordHash\": \"$2a$10$hashdeprueba\",\n  \"telefono\": \"5555998877\",\n  \"rol\": { \"id\": 3 },\n  \"activo\": true\n}" }, "url": "{{baseUrl}}/api/usuarios/{{usuarioId}}" } },
+        { "name": "Eliminar usuario", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/usuarios/{{usuarioId}}" } }
+      ]
+    },
+    {
+      "name": "Especialidades",
+      "item": [
+        { "name": "Listar especialidades", "request": { "method": "GET", "url": "{{baseUrl}}/api/especialidades" } },
+        { "name": "Buscar especialidad", "request": { "method": "GET", "url": "{{baseUrl}}/api/especialidades/{{especialidadId}}" } },
+        { "name": "Crear especialidad", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Dermatologia\",\n  \"descripcion\": \"Atencion de la piel\"\n}" }, "url": "{{baseUrl}}/api/especialidades" } },
+        { "name": "Actualizar especialidad", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Dermatologia clinica\",\n  \"descripcion\": \"Atencion especializada de la piel\"\n}" }, "url": "{{baseUrl}}/api/especialidades/{{especialidadId}}" } },
+        { "name": "Eliminar especialidad", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/especialidades/{{especialidadId}}" } }
+      ]
+    },
+    {
+      "name": "Medicos",
+      "item": [
+        { "name": "Listar medicos", "request": { "method": "GET", "url": "{{baseUrl}}/api/medicos" } },
+        { "name": "Buscar medico", "request": { "method": "GET", "url": "{{baseUrl}}/api/medicos/{{medicoId}}" } },
+        { "name": "Crear medico", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"usuario\": { \"id\": 1 },\n  \"numeroColegiado\": \"COL-2001\",\n  \"aniosExperiencia\": 6,\n  \"biografia\": \"Medico para pruebas\",\n  \"especialidades\": [{ \"id\": 1 }]\n}" }, "url": "{{baseUrl}}/api/medicos" } },
+        { "name": "Actualizar medico", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"usuario\": { \"id\": 1 },\n  \"numeroColegiado\": \"COL-2001\",\n  \"aniosExperiencia\": 7,\n  \"biografia\": \"Biografia actualizada\",\n  \"especialidades\": [{ \"id\": 1 }]\n}" }, "url": "{{baseUrl}}/api/medicos/{{medicoId}}" } },
+        { "name": "Eliminar medico", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/medicos/{{medicoId}}" } }
+      ]
+    },
+    {
+      "name": "Horarios",
+      "item": [
+        { "name": "Listar horarios", "request": { "method": "GET", "url": "{{baseUrl}}/api/horarios" } },
+        { "name": "Buscar horario", "request": { "method": "GET", "url": "{{baseUrl}}/api/horarios/{{horarioId}}" } },
+        { "name": "Crear horario", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"medico\": { \"id\": 1 },\n  \"fecha\": \"2026-08-28\",\n  \"horaInicio\": \"08:00:00\",\n  \"horaFin\": \"08:30:00\",\n  \"estado\": \"DISPONIBLE\"\n}" }, "url": "{{baseUrl}}/api/horarios" } },
+        { "name": "Actualizar horario", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"medico\": { \"id\": 1 },\n  \"fecha\": \"2026-08-28\",\n  \"horaInicio\": \"08:30:00\",\n  \"horaFin\": \"09:00:00\",\n  \"estado\": \"DISPONIBLE\"\n}" }, "url": "{{baseUrl}}/api/horarios/{{horarioId}}" } },
+        { "name": "Eliminar horario", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/horarios/{{horarioId}}" } }
+      ]
+    },
+    {
+      "name": "Citas",
+      "item": [
+        { "name": "Listar citas", "request": { "method": "GET", "url": "{{baseUrl}}/api/citas" } },
+        { "name": "Buscar cita", "request": { "method": "GET", "url": "{{baseUrl}}/api/citas/{{citaId}}" } },
+        { "name": "Crear cita", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"paciente\": { \"id\": 4 },\n  \"medico\": { \"id\": 1 },\n  \"horario\": { \"id\": 3 },\n  \"estado\": \"PENDIENTE\",\n  \"motivo\": \"Consulta de prueba\"\n}" }, "url": "{{baseUrl}}/api/citas" } },
+        { "name": "Actualizar cita", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"paciente\": { \"id\": 4 },\n  \"medico\": { \"id\": 1 },\n  \"horario\": { \"id\": 3 },\n  \"estado\": \"CANCELADA\",\n  \"motivo\": \"Consulta cancelada\"\n}" }, "url": "{{baseUrl}}/api/citas/{{citaId}}" } },
+        { "name": "Eliminar cita", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/citas/{{citaId}}" } }
+      ]
+    }
+  ]
+}
