@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{baseUrl}}/api/horarios"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "medico": { "id": 1 },
+      "fecha": "2026-08-28",
+      "horaInicio": "08:00:00",
+      "horaFin": "08:30:00",
+      "estado": "DISPONIBLE"
+    }
+order: 3000

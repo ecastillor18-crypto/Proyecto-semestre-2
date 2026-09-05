@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/roles"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nombreRol": "ROLE_TEST",
+      "descripcion": "Rol para pruebas"
+    }
+order: 3000

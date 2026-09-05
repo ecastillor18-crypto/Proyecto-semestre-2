@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/especialidades"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nombre": "Dermatologia",
+      "descripcion": "Atencion de la piel"
+    }
+order: 3000

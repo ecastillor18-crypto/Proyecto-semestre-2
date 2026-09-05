@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{baseUrl}}/api/medicos/{{medicoId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "usuario": { "id": 1 },
+      "numeroColegiado": "COL-2001",
+      "aniosExperiencia": 7,
+      "biografia": "Biografia actualizada",
+      "especialidades": [{ "id": 1 }]
+    }
+order: 4000

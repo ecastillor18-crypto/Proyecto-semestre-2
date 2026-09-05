@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/roles/{{rolId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "nombreRol": "ROLE_TEST_ACTUALIZADO",
+      "descripcion": "Rol actualizado"
+    }
+order: 4000

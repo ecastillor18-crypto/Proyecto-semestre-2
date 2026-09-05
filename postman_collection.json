@@ -1,0 +1,162 @@
+{
+  "info": {
+    "name": "API Citas Médicas - Autenticación y Personas",
+    "description": "Colección para probar el login y el CRUD de personas.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "personaId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Iniciar sesión",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"usuario@ejemplo.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('El login responde correctamente', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "const respuesta = pm.response.json();",
+                  "const token = respuesta.token || respuesta.access_token;",
+                  "pm.test('La respuesta contiene un token', function () {",
+                  "    pm.expect(token).to.be.a('string').and.not.empty;",
+                  "});",
+                  "if (token) {",
+                  "    pm.collectionVariables.set('token', token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Personas",
+      "item": [
+        {
+          "name": "Listar personas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/personas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "personas"]
+            }
+          }
+        },
+        {
+          "name": "Crear persona",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana\",\n  \"apellido\": \"García\",\n  \"email\": \"ana.garcia@ejemplo.com\",\n  \"telefono\": \"3001234567\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/personas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "personas"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar persona",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana María\",\n  \"apellido\": \"García\",\n  \"email\": \"ana.garcia@ejemplo.com\",\n  \"telefono\": \"3009876543\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/personas/{{personaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "personas", "{{personaId}}"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar persona",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/personas/{{personaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "personas", "{{personaId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
