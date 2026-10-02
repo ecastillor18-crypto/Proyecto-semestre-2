@@ -3,3 +3,8 @@ export interface Especialidad {
   nombre: string;
   descripcion: string | null;
 }
+
+export interface EspecialidadRequest {
+  nombre: string;
+  descripcion: string | null;
+}

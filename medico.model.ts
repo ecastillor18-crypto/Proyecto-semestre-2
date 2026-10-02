@@ -1,9 +1,6 @@
 import { Especialidad } from './especialidad.model';
 
-/**
- * Forma en la que Spring Boot (Fase 2) devuelve la entidad Medico.
- * En la Fase 2 el usuario viene anidado dentro del medico.
- */
+/** Respuesta real de /api/medicos en la Fase 2. */
 export interface MedicoApi {
   id: number;
   usuario: {
@@ -18,9 +15,7 @@ export interface MedicoApi {
   especialidades: Especialidad[];
 }
 
-/**
- * Modelo mas comodo para mostrar el medico en la vista Angular.
- */
+/** Modelo cómodo para la tabla de Angular. */
 export interface MedicoAdmin {
   id: number;
   usuarioId: number;
@@ -32,17 +27,27 @@ export interface MedicoAdmin {
   especialidades: Especialidad[];
 }
 
-/**
- * Payload compatible con el MedicoController existente en Spring Boot Fase 2.
- * Todavia se envia la entidad con referencias por id porque el backend original
- * recibe @RequestBody Medico.
- */
+/** Payload compatible con MedicoController de Spring Boot Fase 2. */
 export interface MedicoRequest {
   usuario: { id: number };
   numeroColegiado: string;
   aniosExperiencia: number;
   biografia: string | null;
   especialidades: Array<{ id: number }>;
+}
+
+/** Respuesta del endpoint administrativo /api/usuarios usada solo para elegir doctores. */
+export interface UsuarioDoctorApi {
+  id: number;
+  nombre: string;
+  apellido: string;
+  email: string;
+  activo: boolean;
+  rol: {
+    id: number;
+    nombreRol: string;
+    descripcion?: string | null;
+  };
 }
 
 export interface DoctorPublico {
