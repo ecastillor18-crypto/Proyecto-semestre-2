@@ -1,6 +1,7 @@
 package com.fase1.proyecto.service;
 
 import com.fase1.proyecto.dto.CitaRequestDTO;
+import com.fase1.proyecto.dto.DiagnosticoRequestDTO;
 import com.fase1.proyecto.exception.BusinessConflictException;
 import com.fase1.proyecto.exception.ResourceNotFoundException;
 import com.fase1.proyecto.modelos.Cita;
@@ -68,6 +69,33 @@ public class CitaService {
 
     public Optional<Cita> buscarPorId(Integer id) {
         return citaRepository.findById(id);
+    }
+    
+    @Transactional
+    public Cita registrarDiagnostico(Integer id, DiagnosticoRequestDTO request) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No existe una cita con id " + id));
+
+        if (cita.getEstado() == Cita.EstadoCita.CANCELADA) {
+            throw new BusinessConflictException(
+                    "No se puede atender una cita cancelada");
+        }
+
+        if (cita.getEstado() == Cita.EstadoCita.COMPLETADA) {
+            throw new BusinessConflictException(
+                    "La cita ya fue completada");
+        }
+
+        cita.setDiagnostico(request.getDiagnostico().trim());
+
+        if (request.getReceta() != null) {
+            cita.setReceta(request.getReceta().trim());
+        }
+
+        cita.setEstado(Cita.EstadoCita.COMPLETADA);
+
+        return citaRepository.save(cita);
     }
 
     public void eliminar(Integer id) {

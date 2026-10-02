@@ -30,6 +30,12 @@ public class Cita {
     @Column(nullable = false, length = 255)
     private String motivo;
 
+    @Column(columnDefinition = "TEXT")
+    private String diagnostico;
+
+    @Column(columnDefinition = "TEXT")
+    private String receta;
+
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
 
@@ -117,6 +123,22 @@ public class Cita {
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;
+    }
+
+    public String getDiagnostico() {
+    return diagnostico;
+    }
+
+    public void setDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
+    }
+
+    public String getReceta() {
+    return receta;
+    }
+
+    public void setReceta(String receta) {
+    this.receta = receta;
     }
 
     public LocalDateTime getFechaCreacion() {
