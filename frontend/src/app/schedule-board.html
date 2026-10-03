@@ -1,0 +1,184 @@
+@if (!session()) {
+  <main class="login-shell">
+    <section class="login-panel" aria-labelledby="login-title">
+      <div class="brand-mark" aria-hidden="true">AM</div>
+      <p class="eyebrow">GESTIÓN CLÍNICA</p>
+      <h1 id="login-title">Agenda médica</h1>
+      <p class="login-copy">Inicia sesión con una cuenta administradora para gestionar horarios.</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+        <label for="email">Correo electrónico</label>
+        <input id="email" type="email" autocomplete="username" formControlName="email" placeholder="admin@clinica.com">
+        @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+          <small class="field-error">Ingresa un correo válido.</small>
+        }
+
+        <label for="password">Contraseña</label>
+        <input id="password" type="password" autocomplete="current-password" formControlName="password" placeholder="••••••••">
+        @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+          <small class="field-error">La contraseña es obligatoria.</small>
+        }
+
+        @if (errorMessage()) {
+          <p class="notice error-notice" role="alert">{{ errorMessage() }}</p>
+        }
+        <button class="primary-button login-button" type="submit">Ingresar a la agenda</button>
+      </form>
+    </section>
+    <div class="login-aside" aria-hidden="true">
+      <span class="aside-kicker">PLANIFICACIÓN DIARIA</span>
+      <p>El tiempo de consulta,<br>bien organizado.</p>
+      <span class="aside-date">FECHA SELECCIONADA · {{ scheduleForm.controls.fecha.value }}</span>
+    </div>
+  </main>
+} @else {
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Agenda médica, inicio">
+        <span class="brand-mark small-mark" aria-hidden="true">AM</span>
+        <span>CLÍNICA<span class="brand-dot">/</span>AGENDA</span>
+      </a>
+      <div class="topbar-right">
+        <span class="session-email">{{ session()?.email }}</span>
+        <button class="text-button" type="button" (click)="logout()">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">OPERACIONES <span>/</span> CONSULTORIOS</p>
+          <h1>Agenda del médico</h1>
+          <p class="page-subtitle">Configura bloques de atención y revisa su disponibilidad.</p>
+        </div>
+        <div class="today-stamp">
+          <span class="stamp-label">PANEL ADMINISTRATIVO</span>
+          <span class="stamp-value">HORARIOS</span>
+        </div>
+      </section>
+
+      @if (errorMessage()) {
+        <p class="notice error-notice" role="alert">{{ errorMessage() }}</p>
+      }
+      @if (successMessage()) {
+        <p class="notice success-notice" role="status">{{ successMessage() }}</p>
+      }
+
+      <div class="workspace">
+        <section class="editor-panel" aria-labelledby="editor-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">CONFIGURACIÓN</p>
+              <h2 id="editor-title">{{ editingId() ? 'Editar horario' : 'Nuevo horario' }}</h2>
+            </div>
+            <span class="step-number">01</span>
+          </div>
+
+          <form [formGroup]="scheduleForm" (ngSubmit)="saveSchedule()" novalidate>
+            <label for="doctor">Médico</label>
+            <select id="doctor" formControlName="medicoId" (change)="loadAgenda()">
+              <option value="">{{ loadingDoctors() ? 'Cargando médicos…' : 'Seleccionar médico' }}</option>
+              @for (doctor of doctors(); track doctor.id) {
+                <option [value]="doctor.id">{{ doctor.nombreCompleto }}</option>
+              }
+            </select>
+            @if (scheduleForm.controls.medicoId.touched && scheduleForm.controls.medicoId.invalid) {
+              <small class="field-error">Selecciona un médico.</small>
+            }
+
+            <label for="date">Fecha</label>
+            <input id="date" type="date" formControlName="fecha" (change)="loadAgenda()">
+            @if (scheduleForm.controls.fecha.touched && scheduleForm.controls.fecha.invalid) {
+              <small class="field-error">La fecha es obligatoria.</small>
+            }
+
+            <div class="time-fields">
+              <div>
+                <label for="start-time">Hora de inicio</label>
+                <input id="start-time" type="time" formControlName="horaInicio">
+              </div>
+              <div>
+                <label for="end-time">Hora final</label>
+                <input id="end-time" type="time" formControlName="horaFin">
+              </div>
+            </div>
+            @if (scheduleForm.controls.horaInicio.touched && scheduleForm.controls.horaInicio.invalid) {
+              <small class="field-error">La hora de inicio es obligatoria.</small>
+            }
+            @if (scheduleForm.controls.horaFin.touched && scheduleForm.controls.horaFin.invalid) {
+              <small class="field-error">La hora final es obligatoria.</small>
+            }
+            @if (scheduleForm.hasError('invalidTimeRange') && (scheduleForm.controls.horaInicio.touched || scheduleForm.controls.horaFin.touched)) {
+              <small class="field-error">La hora final debe ser posterior a la inicial.</small>
+            }
+
+            <button class="primary-button submit-button" type="submit" [disabled]="saving() || loadingDoctors()">
+              {{ saving() ? 'Guardando…' : editingId() ? 'Guardar cambios' : 'Agregar horario' }}
+            </button>
+            @if (editingId()) {
+              <button class="secondary-button" type="button" (click)="resetEditor()">Salir de edición</button>
+            }
+          </form>
+
+          <p class="editor-footnote">Los cruces y reglas finales se validan también en el servidor.</p>
+        </section>
+
+        <section class="agenda-panel" aria-labelledby="agenda-title">
+          <div class="section-heading agenda-heading">
+            <div>
+              <p class="eyebrow">VISTA DEL DÍA</p>
+              <h2 id="agenda-title">Agenda</h2>
+            </div>
+            <span class="slot-count"><strong>{{ totalSlots() }}</strong> bloques</span>
+          </div>
+
+          <div class="summary-strip" aria-label="Resumen de estados">
+            <div><span class="summary-dot available-dot"></span><span>Disponibles</span><strong>{{ availableSlots() }}</strong></div>
+            <div><span class="summary-dot reserved-dot"></span><span>Reservados</span><strong>{{ reservedSlots() }}</strong></div>
+            <div><span class="summary-dot canceled-dot"></span><span>Cancelados</span><strong>{{ canceledSlots() }}</strong></div>
+          </div>
+
+          <div class="agenda-list">
+            @if (!scheduleForm.controls.medicoId.value || !scheduleForm.controls.fecha.value) {
+              <div class="empty-state">
+                <span class="empty-index">AGENDA</span>
+                <p>Selecciona un médico y una fecha para consultar sus bloques.</p>
+              </div>
+            } @else if (loadingAgenda()) {
+              <div class="empty-state"><p>Actualizando agenda…</p></div>
+            } @else if (agenda().length === 0) {
+              <div class="empty-state">
+                <span class="empty-index">SIN BLOQUES</span>
+                <p>No hay horarios registrados para esta fecha.</p>
+              </div>
+            } @else {
+              @for (slot of agenda(); track slot.id; let index = $index) {
+                <article class="agenda-row" [class.row-canceled]="slot.estado === 'CANCELADO'">
+                  <span class="row-index">{{ (index + 1).toString().padStart(2, '0') }}</span>
+                  <div class="time-range">
+                    <span>{{ displayTime(slot.horaInicio) }}</span>
+                    <span class="time-dash">—</span>
+                    <span>{{ displayTime(slot.horaFin) }}</span>
+                  </div>
+                  <span class="state-pill" [class]="'state-pill state-' + slot.estado.toLowerCase()">
+                    <span class="state-dot"></span>{{ stateLabel(slot.estado) }}
+                  </span>
+                  @if (slot.estado === 'DISPONIBLE') {
+                    <div class="row-actions">
+                      <button type="button" class="action-button" (click)="editSchedule(slot)" [attr.aria-label]="'Editar horario de ' + displayTime(slot.horaInicio)">Editar</button>
+                      <button type="button" class="action-button cancel-action" (click)="cancelSchedule(slot)" [attr.aria-label]="'Cancelar horario de ' + displayTime(slot.horaInicio)">Cancelar</button>
+                    </div>
+                  } @else {
+                    <span class="locked-label">{{ slot.estado === 'RESERVADO' ? 'Cita asignada' : 'Sin acciones' }}</span>
+                  }
+                </article>
+              }
+            }
+          </div>
+          <p class="agenda-footnote">Los bloques reservados se conservan; solo los disponibles pueden modificarse o cancelarse.</p>
+        </section>
+      </div>
+      <footer class="page-footer"><span>GESTIÓN DE HORARIOS</span><span>CLÍNICA · {{ scheduleForm.controls.fecha.value }}</span></footer>
+    </main>
+  </div>
+}
