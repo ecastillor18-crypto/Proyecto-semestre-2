@@ -1,0 +1,3 @@
+localResources:
+  collections:
+    - ../postman_collection.json

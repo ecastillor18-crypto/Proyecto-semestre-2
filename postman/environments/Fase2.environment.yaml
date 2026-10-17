@@ -1,0 +1,24 @@
+name: Fase 2 Local
+values:
+  - key: baseUrl
+    value: http://localhost:8080
+  - key: adminToken
+    value: ''
+  - key: doctorToken
+    value: ''
+  - key: patientToken
+    value: ''
+  - key: doctorId
+    value: ''
+  - key: especialidadId
+    value: ''
+  - key: phase2Date
+    value: ''
+  - key: phase2Start
+    value: ''
+  - key: phase2End
+    value: ''
+  - key: createdScheduleId
+    value: ''
+  - key: appointmentId
+    value: ''
