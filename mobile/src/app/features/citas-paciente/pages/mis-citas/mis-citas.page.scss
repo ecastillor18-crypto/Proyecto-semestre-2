@@ -1,0 +1,8 @@
+.encabezado { margin-bottom: 18px; }
+.encabezado h1 { margin-bottom: 6px; font-size: 1.45rem; }
+.encabezado p { margin: 0; color: var(--ion-color-medium); }
+.fila-titulo { display: flex; gap: 12px; justify-content: space-between; align-items: flex-start; }
+.acciones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.centrado, .vacio { min-height: 240px; display: grid; place-items: center; text-align: center; align-content: center; gap: 8px; }
+.vacio ion-icon { font-size: 52px; color: var(--ion-color-medium); }
+ion-card { margin-left: 0; margin-right: 0; }

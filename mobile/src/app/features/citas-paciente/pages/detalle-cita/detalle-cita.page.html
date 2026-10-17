@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Detalle de cita</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="centrado" *ngIf="cargando">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando detalle...</p>
+  </div>
+
+  <ion-card color="danger" *ngIf="!cargando && error">
+    <ion-card-content>{{ error }}</ion-card-content>
+  </ion-card>
+
+  <ng-container *ngIf="!cargando && cita as actual">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>Médico</ion-card-subtitle>
+        <ion-card-title>{{ actual.medicoNombre }}</ion-card-title>
+        <ion-chip [color]="actual.estado === 'COMPLETADA' ? 'success' : actual.estado === 'CANCELADA' ? 'medium' : 'warning'">
+          <ion-label>{{ actual.estado }}</ion-label>
+        </ion-chip>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list lines="full">
+          <ion-item>
+            <ion-label>
+              <strong>Fecha</strong>
+              <p>{{ formatearFecha(actual.fecha) }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <strong>Hora</strong>
+              <p>{{ formatearHora(actual.horaInicio) }} - {{ formatearHora(actual.horaFin) }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label class="ion-text-wrap">
+              <strong>Motivo</strong>
+              <p>{{ actual.motivo }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <strong>Creada</strong>
+              <p>{{ actual.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <strong>Última actualización</strong>
+              <p>{{ actual.fechaActualizacion | date:'dd/MM/yyyy HH:mm' }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="actual.estado === 'COMPLETADA'">
+      <ion-card-header>
+        <ion-card-title>Detalle clínico</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="bloque-clinico">
+          <h3>Diagnóstico</h3>
+          <p>{{ actual.diagnostico || 'No se registró diagnóstico.' }}</p>
+        </div>
+        <div class="bloque-clinico">
+          <h3>Receta / indicaciones</h3>
+          <p>{{ actual.receta || 'No se registró receta o indicaciones.' }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>
