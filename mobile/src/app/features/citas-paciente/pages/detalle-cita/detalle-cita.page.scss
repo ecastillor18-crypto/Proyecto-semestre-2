@@ -1,0 +1,5 @@
+.centrado { min-height: 240px; display: grid; place-items: center; align-content: center; gap: 8px; }
+.bloque-clinico + .bloque-clinico { margin-top: 18px; }
+.bloque-clinico h3 { margin-bottom: 6px; }
+.bloque-clinico p { white-space: pre-wrap; margin-top: 0; }
+ion-card { margin-left: 0; margin-right: 0; }

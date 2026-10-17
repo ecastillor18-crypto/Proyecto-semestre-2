@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Historial</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="cargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <section class="encabezado">
+    <h1>Historial clínico</h1>
+    <p>Consulta citas completadas o canceladas y abre su detalle.</p>
+  </section>
+
+  <div class="centrado" *ngIf="cargando">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando historial...</p>
+  </div>
+
+  <ion-card color="danger" *ngIf="!cargando && error">
+    <ion-card-content>
+      {{ error }}
+      <ion-button fill="clear" color="light" size="small" (click)="cargar()">Reintentar</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="let cita of citas">
+    <ion-card-header>
+      <div class="fila-titulo">
+        <div>
+          <ion-card-subtitle>{{ formatearFecha(cita.fecha) }} · {{ formatearHora(cita.horaInicio) }}</ion-card-subtitle>
+          <ion-card-title>{{ cita.medicoNombre }}</ion-card-title>
+        </div>
+        <ion-chip [color]="colorEstado(cita.estado)">
+          <ion-label>{{ cita.estado }}</ion-label>
+        </ion-chip>
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><strong>Motivo:</strong> {{ cita.motivo }}</p>
+      <p *ngIf="cita.estado === 'COMPLETADA' && cita.diagnostico">
+        <strong>Diagnóstico:</strong> {{ cita.diagnostico }}
+      </p>
+      <ion-button expand="block" fill="outline" [routerLink]="['../citas', cita.id]">
+        Ver detalle
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="vacio" *ngIf="!cargando && !error && citas.length === 0">
+    <ion-icon name="file-tray-outline"></ion-icon>
+    <h2>Sin historial</h2>
+    <p>Tus citas completadas o canceladas aparecerán aquí.</p>
+  </div>
+</ion-content>
