@@ -15,6 +15,9 @@ export class HorarioService {
     if (fecha) params = params.set('fecha', fecha);
     return this.http.get<Horario[]>(`${this.url}/manage`, { params });
   }
+  disponibles(): Observable<Horario[]> {
+    return this.http.get<Horario[]>(`${this.url}/available`);
+  }
   crear(payload: HorarioRequest): Observable<Horario> { return this.http.post<Horario>(this.url, payload); }
   actualizar(id: number, payload: HorarioRequest): Observable<Horario> { return this.http.put<Horario>(`${this.url}/${id}`, payload); }
   cancelar(id: number): Observable<Horario> { return this.http.patch<Horario>(`${this.url}/${id}/cancel`, {}); }
