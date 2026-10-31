@@ -23,6 +23,12 @@ export const routes: Routes = [
           import('./pages/buscar-medico/buscar-medico.page').then((m) => m.BuscarMedicoPage),
       },
       {
+        // detalle del medico, recibe el medicoId por la url
+        path: 'buscar-medico/medico/:id',
+        loadComponent: () =>
+          import('./pages/detalle-medico/detalle-medico.page').then((m) => m.DetalleMedicoPage),
+      },
+      {
         path: 'mis-citas',
         loadComponent: () => import('./pages/mis-citas/mis-citas.page').then((m) => m.MisCitasPage),
       },
